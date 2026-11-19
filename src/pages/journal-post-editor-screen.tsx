@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, Trash01 } from "@untitledui/icons";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { FileUpload } from "@/components/application/file-upload/file-upload-base";
 import { Button } from "@/components/base/buttons/button";
 import { Input } from "@/components/base/input/input";
@@ -23,6 +23,8 @@ const saveStatusLabels: Record<SaveStatus, string> = {
 
 export const JournalPostEditorScreen = () => {
     const { entryId } = useParams<{ entryId: string }>();
+    const { state } = useLocation();
+    const startingPrompt = (state as { writingPrompt?: JournalEntry["writingPrompt"] } | null)?.writingPrompt;
 
     const [entry, setEntry] = useState<JournalEntry | null>(null);
     const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
@@ -74,17 +76,19 @@ export const JournalPostEditorScreen = () => {
             setEntry(loaded);
         };
 
+        const newEntry: JournalEntry = { id: entryId, title: "", writingPrompt: startingPrompt };
+
         getJournalEntry(entryId)
-            .then((saved) => showEntry(saved ?? { id: entryId, title: "" }))
+            .then((saved) => showEntry(saved ?? newEntry))
             .catch(() => {
-                showEntry({ id: entryId, title: "" });
+                showEntry(newEntry);
                 setSaveStatus("error");
             });
 
         return () => {
             isCurrent = false;
         };
-    }, [entryId]);
+    }, [entryId, startingPrompt]);
 
     useEffect(() => {
         const saveWhenHidden = () => {
