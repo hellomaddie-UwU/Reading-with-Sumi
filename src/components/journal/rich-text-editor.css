@@ -1,0 +1,60 @@
+.rich-text-editor {
+    min-height: 20rem;
+    outline: none;
+}
+
+.rich-text-editor .is-empty::before {
+    float: left;
+    height: 0;
+    color: var(--color-text-placeholder);
+    content: attr(data-placeholder);
+    pointer-events: none;
+}
+
+.rich-text-editor img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+}
+
+.rich-text-editor img.ProseMirror-selectednode {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+}
+
+.rich-text-editor ul[data-type="taskList"] {
+    padding-left: 0;
+    list-style: none;
+}
+
+.rich-text-editor ul[data-type="taskList"] > li {
+    display: flex;
+    gap: 0.625rem;
+    align-items: flex-start;
+    padding-left: 0;
+}
+
+.rich-text-editor ul[data-type="taskList"] > li > label {
+    margin-top: 0.2rem;
+}
+
+.rich-text-editor ul[data-type="taskList"] > li input {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--color-brand-600);
+    cursor: pointer;
+}
+
+.rich-text-editor ul[data-type="taskList"] > li > div {
+    flex: 1;
+    min-width: 0;
+}
+
+.rich-text-editor ul[data-type="taskList"] > li > div p {
+    margin: 0;
+}
+
+.rich-text-editor ul[data-type="taskList"] > li[data-checked="true"] > div {
+    color: var(--color-text-tertiary);
+    text-decoration: line-through;
+}

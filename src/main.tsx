@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { AuthScreen } from "@/pages/auth-screen";
 import { DashboardScreen } from "@/pages/dashboard-screen";
+import { JournalPostEditorScreen } from "@/pages/journal-post-editor-screen";
 import { NotFound } from "@/pages/not-found";
 import { OnboardingScreen } from "@/pages/onboarding-screen";
 import { VerifyEmailScreen } from "@/pages/verify-email-screen";
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/verify" element={<VerifyEmailScreen />} />
                         <Route path="/onboarding" element={<OnboardingScreen />} />
                         <Route path="/dashboard" element={<DashboardScreen />} />
+                        <Route path="/journal-post-editor/:entryId" element={<JournalPostEditorScreen />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </RouteProvider>

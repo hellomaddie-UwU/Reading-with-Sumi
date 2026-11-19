@@ -10,6 +10,7 @@ import { ProgressBarBase } from "@/components/base/progress-indicators/progress-
 import { RadioButtonBase, RadioGroup } from "@/components/base/radio-buttons/radio-buttons";
 import { UntitledLogo } from "@/components/foundations/logo/untitledui-logo";
 import { cx } from "@/utils/cx";
+import { saveDeckPreference } from "@/utils/journal-storage";
 
 interface Option {
     title: string;
@@ -154,6 +155,10 @@ export const OnboardingScreen = () => {
         if (question.id === "deck" && ownsDeck && !isNamingDeck) {
             setIsNamingDeck(true);
             return;
+        }
+
+        if (question.id === "deck") {
+            saveDeckPreference({ hasDeck: ownsDeck, deckName: ownsDeck ? deckName.trim() : undefined });
         }
 
         setIsNamingDeck(false);
