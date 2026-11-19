@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { AuthScreen } from "@/pages/auth-screen";
+import { DashboardScreen } from "@/pages/dashboard-screen";
 import { NotFound } from "@/pages/not-found";
 import { OnboardingScreen } from "@/pages/onboarding-screen";
 import { VerifyEmailScreen } from "@/pages/verify-email-screen";
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/" element={<AuthScreen />} />
                         <Route path="/verify" element={<VerifyEmailScreen />} />
                         <Route path="/onboarding" element={<OnboardingScreen />} />
+                        <Route path="/dashboard" element={<DashboardScreen />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </RouteProvider>
