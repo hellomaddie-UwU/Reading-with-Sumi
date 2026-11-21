@@ -292,6 +292,8 @@ const MultiSelectRoot = ({
                                     aria-label={label || "Options"}
                                     items={items}
                                     selectionMode="multiple"
+                                    // Escape should close the menu, not wipe what the person picked.
+                                    escapeKeyBehavior="none"
                                     selectedKeys={selectedKeys}
                                     defaultSelectedKeys={defaultSelectedKeys}
                                     onSelectionChange={onSelectionChange}

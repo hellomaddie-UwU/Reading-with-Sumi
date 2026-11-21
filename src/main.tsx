@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
+import { ArchiveScreen } from "@/pages/archive-screen";
 import { AuthScreen } from "@/pages/auth-screen";
 import { DashboardScreen } from "@/pages/dashboard-screen";
 import { JournalPostEditorScreen } from "@/pages/journal-post-editor-screen";
@@ -24,6 +25,7 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/dashboard" element={<DashboardScreen />} />
                         <Route path="/journal-post-editor/:entryId" element={<JournalPostEditorScreen />} />
                         <Route path="/learning-hub" element={<LearningHubScreen />} />
+                        <Route path="/archive" element={<ArchiveScreen />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </RouteProvider>

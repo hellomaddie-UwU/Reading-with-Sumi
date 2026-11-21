@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, Trash01 } from "@untitledui/icons";
-import { useLocation, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { FileUpload } from "@/components/application/file-upload/file-upload-base";
 import { Button } from "@/components/base/buttons/button";
 import { Input } from "@/components/base/input/input";
+import { ConfirmDialog } from "@/components/journal/confirm-dialog";
 import { RichTextEditor } from "@/components/journal/rich-text-editor";
 import { WritingPrompt } from "@/components/journal/writing-prompt";
 import type { JournalEntry } from "@/utils/journal-storage";
-import { getJournalEntry, saveJournalEntry } from "@/utils/journal-storage";
+import { ARCHIVE_DAYS, archiveJournalEntry, getJournalEntry, saveJournalEntry } from "@/utils/journal-storage";
 
 const AUTOSAVE_DELAY_MS = 800;
 const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024;
@@ -23,6 +24,8 @@ const saveStatusLabels: Record<SaveStatus, string> = {
 
 export const JournalPostEditorScreen = () => {
     const { entryId } = useParams<{ entryId: string }>();
+    const navigate = useNavigate();
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const { state } = useLocation();
     const startingPrompt = (state as { writingPrompt?: JournalEntry["writingPrompt"] } | null)?.writingPrompt;
 
@@ -105,6 +108,14 @@ export const JournalPostEditorScreen = () => {
         };
     }, [save]);
 
+    const deleteEntry = async () => {
+        // Save any last changes first, so archiving keeps everything that was written.
+        await save();
+        if (entryId) await archiveJournalEntry(entryId);
+        hasUnsavedChangesRef.current = false;
+        navigate("/dashboard");
+    };
+
     const featuredImage = entry?.featuredImage;
 
     useEffect(() => {
@@ -128,9 +139,14 @@ export const JournalPostEditorScreen = () => {
                     <Button href="/dashboard" color="link-gray" size="sm" iconLeading={ArrowLeft}>
                         Dashboard
                     </Button>
-                    <p role="status" className="text-sm text-tertiary">
-                        {saveStatusLabels[saveStatus]}
-                    </p>
+                    <div className="flex items-center gap-3">
+                        <p role="status" className="text-sm text-tertiary">
+                            {saveStatusLabels[saveStatus]}
+                        </p>
+                        <Button color="tertiary-destructive" size="sm" iconLeading={Trash01} onPress={() => setIsDeleteDialogOpen(true)}>
+                            Delete
+                        </Button>
+                    </div>
                 </div>
             </div>
 
@@ -177,6 +193,14 @@ export const JournalPostEditorScreen = () => {
 
                 <RichTextEditor key={editorVersion} initialContent={entry.content} onChange={(content) => updateEntry({ content })} />
             </div>
+            <ConfirmDialog
+                isOpen={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+                title="Delete this entry?"
+                description={`"${entry.title.trim() || "Untitled entry"}" will move to the Archive, where you can restore it for ${ARCHIVE_DAYS} days.`}
+                confirmLabel="Delete"
+                onConfirm={deleteEntry}
+            />
         </main>
     );
 };

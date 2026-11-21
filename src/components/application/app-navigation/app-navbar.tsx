@@ -1,4 +1,4 @@
-import { LogOut01, Settings01, User01 } from "@untitledui/icons";
+import { Archive, LogOut01, Settings01, User01 } from "@untitledui/icons";
 import { Button as AriaButton, Link as AriaLink } from "react-aria-components";
 import { useLocation, useNavigate } from "react-router";
 import { Avatar } from "@/components/base/avatar/avatar";
@@ -64,12 +64,21 @@ export const AppNavbar = () => {
                         </AriaButton>
 
                         <Dropdown.Popover className="w-48">
-                            <Dropdown.Menu aria-label="Account" onAction={(key) => key === "log-out" && navigate("/")}>
+                            <Dropdown.Menu
+                                aria-label="Account"
+                                onAction={(key) => {
+                                    if (key === "archive") navigate("/archive");
+                                    if (key === "log-out") navigate("/");
+                                }}
+                            >
                                 <Dropdown.Item id="profile" icon={User01}>
                                     Profile
                                 </Dropdown.Item>
                                 <Dropdown.Item id="settings" icon={Settings01}>
                                     Settings
+                                </Dropdown.Item>
+                                <Dropdown.Item id="archive" icon={Archive}>
+                                    Archive
                                 </Dropdown.Item>
                                 <Dropdown.Separator />
                                 <Dropdown.Item id="log-out" icon={LogOut01}>
