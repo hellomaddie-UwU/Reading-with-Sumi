@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { ArrowLeft, SearchLg } from "@untitledui/icons";
+import { SearchLg } from "@untitledui/icons";
 import { Heading as AriaHeading } from "react-aria-components";
 import { useNavigate } from "react-router";
+import { AppNavbar } from "@/components/application/app-navigation/app-navbar";
 import { Dialog, Modal, ModalOverlay } from "@/components/application/modals/modal";
 import { Tabs } from "@/components/application/tabs/tabs";
 import { Badge } from "@/components/base/badges/badges";
@@ -73,91 +74,97 @@ export const LearningHubScreen = () => {
     };
 
     return (
-        <main className="min-h-dvh bg-primary">
-            <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
-                <Button href="/dashboard" color="link-gray" size="sm" iconLeading={ArrowLeft}>
-                    Dashboard
-                </Button>
+        <div className="min-h-dvh bg-primary">
+            <AppNavbar />
+            <main>
+                <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <h1 className="text-display-xs font-semibold text-primary">Learning Hub</h1>
+                        <Input
+                            aria-label="Search cards"
+                            icon={SearchLg}
+                            placeholder="Search cards"
+                            value={search}
+                            onChange={setSearch}
+                            className="sm:max-w-xs"
+                        />
+                    </div>
 
-                <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <h1 className="text-display-xs font-semibold text-primary">Learning Hub</h1>
-                    <Input aria-label="Search cards" icon={SearchLg} placeholder="Search cards" value={search} onChange={setSearch} className="sm:max-w-xs" />
+                    {query ? (
+                        <div className="mt-8">
+                            {searchResults.length > 0 ? (
+                                <CardGrid cards={searchResults} onSelect={openCard} />
+                            ) : (
+                                <p role="status" className="py-12 text-center text-md text-tertiary">
+                                    No cards match "{search.trim()}".
+                                </p>
+                            )}
+                        </div>
+                    ) : (
+                        <Tabs className="mt-8">
+                            <div className="scrollbar-hide overflow-x-auto">
+                                <Tabs.List type="underline" size="md" aria-label="Card groups" className="w-max min-w-full">
+                                    {cardGroups.map((group) => (
+                                        <Tabs.Item key={group.id} id={group.id}>
+                                            {group.label}
+                                        </Tabs.Item>
+                                    ))}
+                                </Tabs.List>
+                            </div>
+
+                            {cardGroups.map((group) => (
+                                <Tabs.Panel key={group.id} id={group.id} className="mt-8">
+                                    <CardGrid cards={group.cards} onSelect={openCard} />
+                                </Tabs.Panel>
+                            ))}
+                        </Tabs>
+                    )}
                 </div>
 
-                {query ? (
-                    <div className="mt-8">
-                        {searchResults.length > 0 ? (
-                            <CardGrid cards={searchResults} onSelect={openCard} />
-                        ) : (
-                            <p role="status" className="py-12 text-center text-md text-tertiary">
-                                No cards match "{search.trim()}".
-                            </p>
-                        )}
-                    </div>
-                ) : (
-                    <Tabs className="mt-8">
-                        <div className="scrollbar-hide overflow-x-auto">
-                            <Tabs.List type="underline" size="md" aria-label="Card groups" className="w-max min-w-full">
-                                {cardGroups.map((group) => (
-                                    <Tabs.Item key={group.id} id={group.id}>
-                                        {group.label}
-                                    </Tabs.Item>
-                                ))}
-                            </Tabs.List>
-                        </div>
+                <ModalOverlay isDismissable isOpen={isCardOpen} onOpenChange={setIsCardOpen}>
+                    <Modal className="sm:max-w-3xl">
+                        <Dialog aria-label={selectedCard?.name}>
+                            {selectedCard && guide && (
+                                <div className="relative flex flex-col gap-6 p-6 sm:flex-row">
+                                    <CloseButton label="Close card" className="absolute top-3 right-3" />
 
-                        {cardGroups.map((group) => (
-                            <Tabs.Panel key={group.id} id={group.id} className="mt-8">
-                                <CardGrid cards={group.cards} onSelect={openCard} />
-                            </Tabs.Panel>
-                        ))}
-                    </Tabs>
-                )}
-            </div>
+                                    <TarotCardImage
+                                        key={selectedCard.id}
+                                        card={selectedCard}
+                                        className="aspect-[2/3] w-36 shrink-0 self-start rounded-lg object-cover shadow-xs sm:w-52"
+                                    />
 
-            <ModalOverlay isDismissable isOpen={isCardOpen} onOpenChange={setIsCardOpen}>
-                <Modal className="sm:max-w-3xl">
-                    <Dialog aria-label={selectedCard?.name}>
-                        {selectedCard && guide && (
-                            <div className="relative flex flex-col gap-6 p-6 sm:flex-row">
-                                <CloseButton label="Close card" className="absolute top-3 right-3" />
+                                    <div className="flex min-w-0 flex-1 flex-col gap-4">
+                                        <div className="pr-8">
+                                            <AriaHeading slot="title" className="text-display-xs font-semibold text-primary">
+                                                {selectedCard.name}
+                                            </AriaHeading>
+                                            <ul className="mt-2 flex flex-wrap gap-1.5">
+                                                {guide.keywords.map((keyword) => (
+                                                    <li key={keyword}>
+                                                        <Badge size="sm" color="brand" type="pill-color">
+                                                            {keyword}
+                                                        </Badge>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
 
-                                <TarotCardImage
-                                    key={selectedCard.id}
-                                    card={selectedCard}
-                                    className="aspect-[2/3] w-36 shrink-0 self-start rounded-lg object-cover shadow-xs sm:w-52"
-                                />
+                                        <GuideSection title="Meaning">{guide.meaning}</GuideSection>
+                                        <GuideSection title="Reversed meaning">{guide.reversed}</GuideSection>
+                                        <GuideSection title="Symbolism">{guide.symbolism}</GuideSection>
+                                        <GuideSection title="Writing prompt">{selectedCard.prompt}</GuideSection>
 
-                                <div className="flex min-w-0 flex-1 flex-col gap-4">
-                                    <div className="pr-8">
-                                        <AriaHeading slot="title" className="text-display-xs font-semibold text-primary">
-                                            {selectedCard.name}
-                                        </AriaHeading>
-                                        <ul className="mt-2 flex flex-wrap gap-1.5">
-                                            {guide.keywords.map((keyword) => (
-                                                <li key={keyword}>
-                                                    <Badge size="sm" color="brand" type="pill-color">
-                                                        {keyword}
-                                                    </Badge>
-                                                </li>
-                                            ))}
-                                        </ul>
+                                        <Button size="lg" className="w-full sm:w-max" onPress={writeAboutCard}>
+                                            Write about this card
+                                        </Button>
                                     </div>
-
-                                    <GuideSection title="Meaning">{guide.meaning}</GuideSection>
-                                    <GuideSection title="Reversed meaning">{guide.reversed}</GuideSection>
-                                    <GuideSection title="Symbolism">{guide.symbolism}</GuideSection>
-                                    <GuideSection title="Writing prompt">{selectedCard.prompt}</GuideSection>
-
-                                    <Button size="lg" className="w-full sm:w-max" onPress={writeAboutCard}>
-                                        Write about this card
-                                    </Button>
                                 </div>
-                            </div>
-                        )}
-                    </Dialog>
-                </Modal>
-            </ModalOverlay>
-        </main>
+                            )}
+                        </Dialog>
+                    </Modal>
+                </ModalOverlay>
+            </main>
+        </div>
     );
 };
