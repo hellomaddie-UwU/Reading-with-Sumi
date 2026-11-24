@@ -10,13 +10,9 @@ import { Checkbox } from "@/components/base/checkbox/checkbox";
 import { Form } from "@/components/base/form/form";
 import { Input } from "@/components/base/input/input";
 import { UntitledLogo } from "@/components/foundations/logo/untitledui-logo";
+import { getEmailError } from "@/utils/validation";
 
 type FieldErrors = Record<string, string | undefined>;
-
-const getEmailError = (email: string) => {
-    if (!email) return "Enter your email.";
-    return /^\S+@\S+\.\S+$/.test(email) ? undefined : "Enter a valid email.";
-};
 
 const getValue = (data: FormData, name: string) => String(data.get(name) ?? "");
 
@@ -72,7 +68,7 @@ const LogInForm = () => {
 
             <div className="flex items-center justify-between gap-3">
                 <Checkbox name="remember" label="Remember me" />
-                <Button color="link-color" size="sm">
+                <Button href="/forgot-password" color="link-color" size="sm">
                     Forgot password
                 </Button>
             </div>

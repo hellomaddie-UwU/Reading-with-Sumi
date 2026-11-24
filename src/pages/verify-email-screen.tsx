@@ -55,7 +55,8 @@ export const VerifyEmailScreen = () => {
 
                 <h1 className="mt-8 text-display-xs font-semibold text-primary">Check your email</h1>
                 <p className="mt-2 text-md text-tertiary">
-                    We sent a {CODE_LENGTH}-digit code to {email ? <span className="font-medium break-all text-secondary">{email}</span> : "your email"}.
+                    We sent a {CODE_LENGTH}-digit code to{" "}
+                    {email ? <span className="font-medium [overflow-wrap:anywhere] text-secondary">{email}</span> : "your email"}.
                 </p>
 
                 <PinInput size="xs" invalid={isInvalid} className="mt-8 items-center">
