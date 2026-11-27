@@ -7,6 +7,7 @@ import { DashboardScreen } from "@/pages/dashboard-screen";
 import { ForgotPasswordScreen } from "@/pages/forgot-password-screen";
 import { JournalPostEditorScreen } from "@/pages/journal-post-editor-screen";
 import { LearningHubScreen } from "@/pages/learning-hub-screen";
+import { MyJourneyScreen } from "@/pages/my-journey-screen";
 import { NotFound } from "@/pages/not-found";
 import { OnboardingScreen } from "@/pages/onboarding-screen";
 import { ResetPasswordScreen } from "@/pages/reset-password-screen";
@@ -30,6 +31,7 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/journal-post-editor/:entryId" element={<JournalPostEditorScreen />} />
                         <Route path="/learning-hub" element={<LearningHubScreen />} />
                         <Route path="/archive" element={<ArchiveScreen />} />
+                        <Route path="/my-journey" element={<MyJourneyScreen />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </RouteProvider>

@@ -33,7 +33,7 @@ export const savedCardOptions: { id: SavedCardFilter; label: string }[] = [
     { id: "without", label: "Without a saved card" },
 ];
 
-const getCardGroup = (cardId: string): CardGroup => {
+export const getCardGroup = (cardId: string): CardGroup => {
     if (tarotCards.findIndex((card) => card.id === cardId) < 22) return "major";
 
     return (["wands", "cups", "swords", "pentacles"] as const).find((suit) => cardId.endsWith(`-of-${suit}`)) ?? "major";

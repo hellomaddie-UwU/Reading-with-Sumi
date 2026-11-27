@@ -9,6 +9,7 @@ import { cx } from "@/utils/cx";
 
 const navLinks = [
     { label: "Dashboard", href: "/dashboard" },
+    { label: "My Journey", href: "/my-journey" },
     { label: "Learning Hub", href: "/learning-hub" },
 ];
 
@@ -18,7 +19,7 @@ export const AppNavbar = () => {
 
     return (
         <header className="border-b border-secondary bg-primary">
-            <nav aria-label="Main" className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-3 md:px-8">
+            <nav aria-label="Main" className="mx-auto grid max-w-7xl grid-cols-[auto_minmax(0,1fr)_auto] items-center md:grid-cols-[1fr_auto_1fr] gap-3 px-4 py-3 md:px-8">
                 <AriaLink
                     href="/dashboard"
                     aria-label="Reading with Sumi, go to Dashboard"
@@ -28,7 +29,7 @@ export const AppNavbar = () => {
                     <UntitledLogo className="max-md:hidden" />
                 </AriaLink>
 
-                <ul className="flex items-center gap-1">
+                <ul className="flex max-w-full items-center gap-1 justify-self-center overflow-x-auto [scrollbar-width:none]">
                     {navLinks.map((link) => {
                         const isCurrent = pathname === link.href;
 

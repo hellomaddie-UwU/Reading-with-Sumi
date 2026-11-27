@@ -1,0 +1,17 @@
+/* Cycles mood colors. Checked with the data-viz palette validator so neighbouring
+   moods stay distinguishable for colorblind readers, in both light and dark mode. */
+:root {
+    --mood-joyful: #eda100;
+    --mood-neutral: #1baf7a;
+    --mood-low: #2a78d6;
+    --mood-frustrated: #eb6834;
+    --mood-needs-care: #6250d6;
+}
+
+.dark-mode {
+    --mood-joyful: #c98500;
+    --mood-neutral: #199e70;
+    --mood-low: #3987e5;
+    --mood-frustrated: #d95926;
+    --mood-needs-care: #9085e9;
+}
