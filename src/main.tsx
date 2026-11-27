@@ -10,6 +10,7 @@ import { LearningHubScreen } from "@/pages/learning-hub-screen";
 import { MyJourneyScreen } from "@/pages/my-journey-screen";
 import { NotFound } from "@/pages/not-found";
 import { OnboardingScreen } from "@/pages/onboarding-screen";
+import { ProfileScreen } from "@/pages/profile-screen";
 import { ResetPasswordScreen } from "@/pages/reset-password-screen";
 import { VerifyEmailScreen } from "@/pages/verify-email-screen";
 import { RouteProvider } from "@/providers/router-provider";
@@ -32,6 +33,7 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/learning-hub" element={<LearningHubScreen />} />
                         <Route path="/archive" element={<ArchiveScreen />} />
                         <Route path="/my-journey" element={<MyJourneyScreen />} />
+                        <Route path="/profile" element={<ProfileScreen />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </RouteProvider>

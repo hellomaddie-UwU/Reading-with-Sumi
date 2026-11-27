@@ -6,6 +6,7 @@ import { Dropdown } from "@/components/base/dropdown/dropdown";
 import { UntitledLogo } from "@/components/foundations/logo/untitledui-logo";
 import { UntitledLogoMinimal } from "@/components/foundations/logo/untitledui-logo-minimal";
 import { cx } from "@/utils/cx";
+import { getInitials, useProfile } from "@/utils/profile";
 
 const navLinks = [
     { label: "Dashboard", href: "/dashboard" },
@@ -16,10 +17,14 @@ const navLinks = [
 export const AppNavbar = () => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
+    const profile = useProfile();
 
     return (
         <header className="border-b border-secondary bg-primary">
-            <nav aria-label="Main" className="mx-auto grid max-w-7xl grid-cols-[auto_minmax(0,1fr)_auto] items-center md:grid-cols-[1fr_auto_1fr] gap-3 px-4 py-3 md:px-8">
+            <nav
+                aria-label="Main"
+                className="mx-auto grid max-w-7xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 md:grid-cols-[1fr_auto_1fr] md:px-8"
+            >
                 <AriaLink
                     href="/dashboard"
                     aria-label="Reading with Sumi, go to Dashboard"
@@ -29,7 +34,7 @@ export const AppNavbar = () => {
                     <UntitledLogo className="max-md:hidden" />
                 </AriaLink>
 
-                <ul className="flex max-w-full items-center gap-1 justify-self-center overflow-x-auto [scrollbar-width:none]">
+                <ul className="flex max-w-full [scrollbar-width:none] items-center gap-1 justify-self-center overflow-x-auto">
                     {navLinks.map((link) => {
                         const isCurrent = pathname === link.href;
 
@@ -61,13 +66,14 @@ export const AppNavbar = () => {
                                 )
                             }
                         >
-                            <Avatar size="md" alt="Your profile" />
+                            <Avatar size="md" src={profile.photo} alt="Your profile" initials={getInitials(profile.name) || undefined} />
                         </AriaButton>
 
                         <Dropdown.Popover className="w-48">
                             <Dropdown.Menu
                                 aria-label="Account"
                                 onAction={(key) => {
+                                    if (key === "profile") navigate("/profile");
                                     if (key === "archive") navigate("/archive");
                                     if (key === "log-out") navigate("/");
                                 }}

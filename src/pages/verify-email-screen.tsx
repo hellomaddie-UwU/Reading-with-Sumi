@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router";
 import { Button } from "@/components/base/buttons/button";
 import { PinInput } from "@/components/base/input/pin-input";
 import { UntitledLogo } from "@/components/foundations/logo/untitledui-logo";
+import { getProfile, saveProfile } from "@/utils/profile";
 
 const CODE_LENGTH = 6;
 const RESEND_SECONDS = 30;
@@ -35,6 +36,7 @@ export const VerifyEmailScreen = () => {
         if (value.length < CODE_LENGTH) return;
 
         if (value === DEMO_CODE) {
+            saveProfile({ ...getProfile(), name: name ?? "", email: email ?? "", memberSince: Date.now() });
             navigate("/onboarding");
         } else {
             setCode("");
